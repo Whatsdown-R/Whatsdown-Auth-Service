@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Whatsdown_Authentication_Service.Models
 {
-    public class GetUsersModel
+    public class GetUserModel
     {
+        public List<String> UserIDs { get;  set; }
     }
 }

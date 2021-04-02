@@ -1,11 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Whatsdown_Authentication_Service.Exceptions
 {
-    public class InsufficientPasswordException
+    public class InsufficientPasswordException : Exception
     {
+        public InsufficientPasswordException()
+        {
+
+        }
+
+        public InsufficientPasswordException(string message) : base(message)
+        {
+
+        }
+
+        public InsufficientPasswordException(string message, Exception inner) : base(message, inner)
+        {
+
+        }
+
     }
 }

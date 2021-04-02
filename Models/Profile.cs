@@ -10,19 +10,29 @@ namespace Whatsdown_Authentication_Service.Models
     public class Profile
     {
       
-        [Key]
-        public string profileId { get; set; }
-        [Required]
-        [MaxLength(25)]
-        public string displayName { get; set; }
-        [MaxLength(100)]
-        public string status { get; set; }
-        public string? profileImage { get; set; }
-        [MaxLength(10)]
-        public string? gender { get; set; }
-        public string userId { get; set; }
-        public User user { get; set; }
+        public string profileId { get; private set; }
+        public string displayName { get; private set; }
+        public string status { get; private set; }
+        public string? profileImage { get; private set; }
+        public string? gender { get; private set; }
+        public string UserID { get; private set; }
+        public User user { get;  set; }
 
+        public Profile()
+        {
+
+        }
+
+        public Profile(string profileId, string displayName, string status, string profileImage, string gender, string userID, User user)
+        {
+            this.profileId = profileId;
+            this.displayName = displayName;
+            this.status = status;
+            this.profileImage = profileImage;
+            this.gender = gender;
+            UserID = userID;
+            this.user = user;
+        }
 
     }
 }

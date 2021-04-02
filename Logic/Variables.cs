@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace Whatsdown_Authentication_Service.Logic
 {
-    public class Variables
+    public static class Variables
     {
+        public static string DefaultStatus = "";
+        public static int DefaultMinimumPasswordLength = 5;
+        public static int DefaultMaximumPasswordLength = 100;
     }
 }

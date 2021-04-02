@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Whatsdown_Authentication_Service.Data;
+using Whatsdown_Authentication_Service.Logic;
+using Whatsdown_Authentication_Service.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,23 +15,32 @@ namespace Whatsdown_Authentication_Service.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        AuthLogic logic;
+        public UserController(AuthenticationContext auth)
+        {
+            this.logic = new AuthLogic(auth);
+        }
+
+
+
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string GetUserProfiles(List<String> UserIds)
         {
-            return new string[] { "value1", "value2" };
+
+            return "ds";
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Profile GetProfile(string id)
         {
-            return "value";
+            return this.logic.GetUserProfile(id);
         }
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Register(RegisterModel model)
         {
         }
 
