@@ -12,5 +12,14 @@ namespace Whatsdown_Authentication_Service.Models
         public string ConfirmPassword { get; private set; }
         public string DisplayName { get; private set; }
         public string Gender { get; private set; }
+
+        public RegisterModel(string email, string password, string confirmPassword, string displayName, string gender)
+        {
+            Email = email;
+            Password = password;
+            ConfirmPassword = confirmPassword;
+            DisplayName = displayName;
+            Gender = gender;
+        }
     }
 }

@@ -23,31 +23,46 @@ namespace Whatsdown_Authentication_Service.Controllers
 
 
 
-        // GET: api/<ValuesController>
+       
         [HttpGet]
-        public string GetUserProfiles(List<String> UserIds)
+        public IActionResult GetUserProfiles(List<String> UserIds)
         {
-
-            return "ds";
+            IActionResult response = Unauthorized();
+            var profiles = logic.GetProfiles(UserIds);
+            response = Ok(new { profiles = profiles });
+            return response;
         }
 
-        // GET api/<ValuesController>/5
+      
         [HttpGet("{id}")]
-        public Profile GetProfile(string id)
+        public IActionResult GetProfile(string id)
         {
-            return this.logic.GetUserProfile(id);
+            IActionResult response = Unauthorized();
+            
+            var profile = this.logic.GetUserProfile(id);
+            response = Ok(new { profiles = profile });
+          
+            return response;
         }
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Register(RegisterModel model)
+        public IActionResult Register(RegisterModel model)
         {
+            IActionResult response = Unauthorized();
+            logic.Register(model);
+            response = Ok();
+            return response;
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult UpdateProfile(ProfileViewModel viewModel)
         {
+            IActionResult response = Unauthorized();
+            logic.UpdateProfile(viewModel);
+            response = Ok();
+            return response;
         }
 
         // DELETE api/<ValuesController>/5

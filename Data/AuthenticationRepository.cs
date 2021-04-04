@@ -26,6 +26,11 @@ namespace Whatsdown_Authentication_Service.Data
         {
             return authenticationContext.Profiles.SingleOrDefault<Profile>(p => p.UserID == Id);
         }
+
+        public Profile GetProfileByProfileId(string ProfileID)
+        {
+            return authenticationContext.Profiles.SingleOrDefault<Profile>(p => p.profileId == ProfileID );
+        }
         public List<Profile> GetProfiles(List<string> ids)
         {
             return this.authenticationContext.Profiles.Where(profile => ids.Contains(profile.UserID)).ToList();

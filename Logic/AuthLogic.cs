@@ -63,7 +63,18 @@ namespace Whatsdown_Authentication_Service.Logic
             return authenticationRepository.GetProfiles(ids);
         }
         
-        
+        public void UpdateProfile(ProfileViewModel viewModel)
+        {
+            Profile profile = authenticationRepository.GetProfileByProfileId(viewModel.profileId);
+
+            if (profile == null)
+            {
+                throw new ProfileNotFoundException("Profile does not exist");
+            }
+
+            Profile changedProfile = new Profile(profile.profileId, viewModel.displayName, viewModel.status, viewModel.profileImage, viewModel.gender, profile.UserID, profile.user);
+            authenticationRepository.saveProfile(changedProfile);
+        }
         
         
         
