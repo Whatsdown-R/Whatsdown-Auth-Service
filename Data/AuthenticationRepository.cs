@@ -38,14 +38,23 @@ namespace Whatsdown_Authentication_Service.Data
 
         public void saveProfile(Profile userProfile)
         {
-            throw new NotImplementedException();
+            authenticationContext.Profiles.Add(userProfile);
+            authenticationContext.SaveChanges();
         }
+
+
 
         public void saveUser(User user)
         {
             authenticationContext.Users.Add(user);
+            authenticationContext.SaveChanges();
+        }
+        public void saveUsers(List<User> users)
+        {
+            authenticationContext.Users.AddRange(users);
+            authenticationContext.SaveChanges();
         }
 
-    
+
     }
 }

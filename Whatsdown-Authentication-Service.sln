@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whatsdown-Authentication-Service", "Whatsdown-Authentication-Service.csproj", "{A170AC0D-85C1-4B10-80E2-4C8CF28DCB34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whatdown-AuthTest", "Whatdown-AuthTest\Whatdown-AuthTest.csproj", "{77508935-D35F-4772-A120-2E74DED55E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whatdown-AuthTest", "Whatdown-AuthTest\Whatdown-AuthTest.csproj", "{77508935-D35F-4772-A120-2E74DED55E03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

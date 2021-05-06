@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using System;
 using Whatsdown_Authentication_Service.Data;
 using Whatsdown_Authentication_Service.Logic;
 using Whatsdown_Authentication_Service.Models;
-
 using Xunit;
 
 namespace Whatdown_AuthTest

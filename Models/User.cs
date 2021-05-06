@@ -10,16 +10,16 @@ namespace Whatsdown_Authentication_Service.Models
     public class User
     {
 
-        public string UserID { get; private set; }
+        public string UserID { get;  set; }
 
-        public string Email { get; private set; }
+        public string Email { get;  set; }
 
 
-        public string PasswordSalt { get; private set; }
+        public string PasswordSalt { get;  set; }
 
-        public string PasswordHash { get; private set; }
+        public string PasswordHash { get;  set; }
 
-        public Profile Profile { get; private set; }
+        public Profile Profile { get;  set; }
 
         public User() { }
 

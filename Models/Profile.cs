@@ -10,12 +10,13 @@ namespace Whatsdown_Authentication_Service.Models
     public class Profile
     {
       
-        public string profileId { get; private set; }
-        public string displayName { get; private set; }
-        public string status { get; private set; }
-        public string? profileImage { get; private set; }
-        public string? gender { get; private set; }
-        public string UserID { get; private set; }
+        public string profileId { get;  set; }
+        public string displayName { get;  set; }
+        public string status { get;  set; }
+        public string? profileImage { get;  set; }
+        public string? gender { get;  set; }
+        public string UserID { get;  set; }
+        
         public User user { get;  set; }
 
         public Profile()
