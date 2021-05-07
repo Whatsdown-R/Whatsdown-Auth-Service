@@ -19,7 +19,7 @@ namespace Whatsdown_Authentication_Service.Data
 
         public User GetUserByEmail(string Email)
         {
-            return authenticationContext.Users.SingleOrDefault<User>(x => x.Email == Email);
+            return authenticationContext.Users.FirstOrDefault<User>(x => x.Email == Email);
         }
 
         public Profile GetProfileByUserId(string Id)
