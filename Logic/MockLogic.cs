@@ -16,7 +16,7 @@ namespace Whatsdown_Authentication_Service.Logic
             this.authenticationRepository = new AuthenticationRepository(_context);
         }
 
-        public UserViewModel MockUsers()
+        public UserViewModel MockUsers(string email)
         {
             List<User> fakeUsers = new List<User>();
 
@@ -34,13 +34,10 @@ namespace Whatsdown_Authentication_Service.Logic
                 authenticationRepository.saveUsers(fakeUsers);
             }
             User user;
-            if (fakeUsers.Count() != 0)
-            user = fakeUsers.FirstOrDefault();
-            else
-            {
-                user = this.authenticationRepository.GetUserByEmail("user0@hotmail.com");
-                user.Profile = this.authenticationRepository.GetProfileByUserId(user.UserID);
-            }
+           
+            user = this.authenticationRepository.GetUserByEmail(email);
+            user.Profile = this.authenticationRepository.GetProfileByUserId(user.UserID);
+         
             UserViewModel userViewModel = new UserViewModel();
             userViewModel.email = user.Email;
             userViewModel.userId = user.UserID;

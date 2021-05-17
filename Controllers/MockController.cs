@@ -19,12 +19,12 @@ namespace Whatsdown_Authentication_Service.Controllers
             this.logic = new MockLogic(auth);
         }
 
-        [HttpGet()]
+        [HttpGet(), Route("{id}")]
         public IActionResult MockData(string id)
         {
             IActionResult response = Unauthorized();
 
-            var profile = this.logic.MockUsers();
+            var profile = this.logic.MockUsers(id);
             response = Ok(new { user = profile });
 
             return response;
