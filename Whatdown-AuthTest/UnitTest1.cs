@@ -13,7 +13,7 @@ namespace Whatdown_AuthTest
         .Options;
 
 
-        [Fact(DisplayName = "Test Registers user")]
+/*        [Fact(DisplayName = "Test Registers user")]
        
         public void RegisterUser()
         {
@@ -26,6 +26,6 @@ namespace Whatdown_AuthTest
                 
 
             }
-        }
+        }*/
     }
 }
