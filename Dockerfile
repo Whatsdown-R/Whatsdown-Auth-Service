@@ -4,15 +4,15 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /source
 
 # copy csproj and restore as distinct layers
-ENV PATH_WITH_SPACE="Whatsdown-Auth-Service"
+ENV PATH_WITH_SPACE="Whatsdown-Authentication-Service"
 copy . ./
 # COPY *.sln .
 
-COPY "*.csproj" ""
+COPY "${PATH_WITH_SPACE}/*.csproj" "./${PATH_WITH_SPACE}/"
 RUN dotnet restore
 # copy everything else and build app
-COPY .. ""
-WORKDIR "/source/"
+COPY "${PATH_WITH_SPACE}/." "./${PATH_WITH_SPACE}/"
+WORKDIR "/source/${PATH_WITH_SPACE}"
 RUN dotnet publish -c release -o /app
 
 # final stage/image
