@@ -28,8 +28,17 @@ namespace Whatsdown_Authentication_Service.Controllers
         public IActionResult GetUserProfiles(List<String> UserIds)
         {
             IActionResult response = Unauthorized();
-            var profiles = logic.GetProfiles(UserIds);
-            response = Ok(new { profiles = profiles });
+            List<Profile> profiles;
+            try
+            {
+                profiles = logic.GetProfiles(UserIds);
+                response = Ok(new { profiles = profiles });
+            }
+            catch(Exception ex)
+            {
+                return response;
+            }
+           
             return response;
         }
 
