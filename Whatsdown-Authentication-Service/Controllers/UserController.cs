@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Whatsdown_Authentication_Service.Data;
 using Whatsdown_Authentication_Service.Logic;
 using Whatsdown_Authentication_Service.Models;
+using Whatsdown_Authentication_Service.View;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -63,6 +64,25 @@ namespace Whatsdown_Authentication_Service.Controllers
             response = Ok();
             return response;
         }
+
+
+        [HttpPost]
+        public IActionResult Authenticate(LoginView model)
+        {
+            IActionResult response = Unauthorized();
+
+            try
+            {
+                return Ok(new { token = logic.Authenticate(model) });
+            }catch(ArgumentException ex)
+            {
+                Unauthorized(ex.Message);
+            }
+
+            return response;
+        }
+
+
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]

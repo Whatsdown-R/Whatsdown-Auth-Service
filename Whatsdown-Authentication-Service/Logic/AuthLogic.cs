@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Whatsdown_Authentication_Service.Data;
 using Whatsdown_Authentication_Service.Exceptions;
 using Whatsdown_Authentication_Service.Models;
+using Whatsdown_Authentication_Service.View;
 
 namespace Whatsdown_Authentication_Service.Logic
 {
@@ -23,7 +24,7 @@ namespace Whatsdown_Authentication_Service.Logic
             if(model.DisplayName == null || model.Email == null || model.ConfirmPassword == null || model.Password == null || model.ConfirmPassword != model.Password)
             {
                 //Throw Exception
-                return;
+                throw new ArgumentException("Please fill in all the fields");
             }
 
             //Check if password is long enough and if not throw exceptions
@@ -32,24 +33,44 @@ namespace Whatsdown_Authentication_Service.Logic
             if (DoesUserWithEmailAlreadyExist(model.Email))
                 throw new UserAlreadyExistException("This email has already been used");
 
-       
-
-            //Hash the password and get Salt
 
 
+            //Hash the password 
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+     
             // Save user
 
             string userID = Guid.NewGuid().ToString();
             string ProfileID = Guid.NewGuid().ToString();
 
             userProfile = new Profile(ProfileID, model.DisplayName, Variables.DefaultStatus, "", model.Gender, userID, null);
-            user = new User(userID, model.Email, "Hash", "Salt", userProfile);
+            user = new User(userID, model.Email, passwordHash, "Salt", userProfile);
             user.Profile.user = user;
 
 
             //Register new User
             authenticationRepository.saveUser(user);
         }
+
+        public Profile Authenticate(LoginView model)
+        {
+            var account = authenticationRepository.GetUserByEmail(model.email);
+
+            // check account found and verify password
+            if (account == null || !BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash))
+            {
+                // authentication failed
+                throw new ArgumentException("The email or password is incorrect.");
+            }
+            else
+            {
+                // authentication successful
+                return authenticationRepository.GetProfileByUserId(account.UserID);
+            }
+        }
+    
+
+
 
         public Profile GetUserProfile(string id)
         {
