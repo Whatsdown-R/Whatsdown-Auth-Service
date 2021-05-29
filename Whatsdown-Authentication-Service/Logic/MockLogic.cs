@@ -43,13 +43,9 @@ namespace Whatsdown_Authentication_Service.Logic
             UserViewModel userViewModel = new UserViewModel();
             userViewModel.email = user.Email;
             userViewModel.userId = user.UserID;
-            
+
             userViewModel.profile = new ProfileViewModel(user.Profile.profileId, user.Profile.displayName, user.Profile.status, user.Profile.profileImage, user.Profile.gender);
-
             return userViewModel;
-
-
-
         }
     }
 }

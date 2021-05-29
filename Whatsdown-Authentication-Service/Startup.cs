@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Whatsdown_Authentication_Service.Data;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace Whatsdown_Authentication_Service
 {
@@ -47,6 +48,7 @@ namespace Whatsdown_Authentication_Service
                     .SetIsOriginAllowed(x => true)
                     .AllowCredentials());
             });
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +63,7 @@ namespace Whatsdown_Authentication_Service
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
