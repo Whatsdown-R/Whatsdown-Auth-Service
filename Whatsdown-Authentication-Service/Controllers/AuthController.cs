@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Whatsdown_Authentication_Service.Logic;
+using Whatsdown_Authentication_Service.View;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Whatsdown_Authentication_Service.Controllers
@@ -15,9 +18,13 @@ namespace Whatsdown_Authentication_Service.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public AuthController(IConfiguration configuration)
+        private AuthV1Logic logic;
+        private ILogger logger;
+        public AuthController(IConfiguration configuration, AuthV1Logic logic, ILogger<AuthController> logger)
         {
             this._configuration = configuration;
+            this.logic = logic;
+            this.logger = logger;
         }
 
            [HttpPost("google")]    
@@ -25,6 +32,7 @@ namespace Whatsdown_Authentication_Service.Controllers
         {
             try
             {
+                logger.LogDebug("Attempting to login with google account");
                 Payload payload = await ValidateAsync(idToken, new ValidationSettings
                 {
                     Audience = new[] { _configuration.GetSection("Authentication:Google")["ClientId"] }
@@ -37,6 +45,7 @@ namespace Whatsdown_Authentication_Service.Controllers
 
                     return Ok(user);
                 }
+                logger.LogInformation($"Google email was not verified, {1}", payload.Email);
                 //store user
 
                 return Unauthorized("Please verify google account first.");
@@ -48,5 +57,24 @@ namespace Whatsdown_Authentication_Service.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpPost]
+        public IActionResult Authenticate(LoginView model)
+        {
+            IActionResult response = Unauthorized();
+            logger.LogDebug("Calling the authenticate method.");
+            try
+            {
+                return Ok(new { token = logic.Authenticate(model) });
+            }
+            catch (ArgumentException ex)
+            {
+                Unauthorized(ex.Message);
+            }
+
+            return response;
+        }
     }
+
+
 }
