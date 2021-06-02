@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Whatsdown_Authentication_Service.Logic
     {
         AuthenticationRepository repository;
         private readonly ILogger logger;
-        public AuthV1Logic(AuthenticationContext context, ILogger<AuthV1Logic> _logger)
+        public AuthV1Logic(IServiceProvider factory , ILogger<AuthV1Logic> _logger)
         {
-            this.repository = new AuthenticationRepository(context);
+            this.repository = new AuthenticationRepository(factory.CreateScope().ServiceProvider.GetRequiredService<AuthenticationContext>());
             this.logger = _logger;
         }
 
@@ -34,12 +35,14 @@ namespace Whatsdown_Authentication_Service.Logic
         {
            
             var account = repository.GetUserByEmail(model.email);
-            logger.LogInformation($"Attempting to authenticate user with email: {1}", model.email);
+            logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
+            Console.WriteLine($"Attempting to authenticate user with email: {1}", model.email);
             // check account found and verify password
             if (account == null || !BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash))
             {
                 // authentication failed
-                logger.LogInformation($"authentication failed with with email: {1}", model.email);
+                logger.LogWarning($"authentication failed with with email: {1}", model.email);
+                Console.WriteLine($"authentication failed with with email: {1}", model.email);
                 throw new ArgumentException("The email or password is incorrect.");
             }
             else
@@ -67,6 +70,7 @@ namespace Whatsdown_Authentication_Service.Logic
             {
                 //Throw Exception
                 logger.LogError($"attempted to create account null values.");
+                Console.WriteLine($"attempted to create account null values.");
                 throw new ArgumentException("Please fill in all the fields");
             }
 
@@ -76,6 +80,7 @@ namespace Whatsdown_Authentication_Service.Logic
             if (DoesUserWithEmailAlreadyExist(model.Email))
             {
                 logger.LogWarning($"attempted to create account with already existing email : {1}", model.Email);
+                Console.WriteLine();
                 throw new UserAlreadyExistException("This email has already been used");
             }
               
@@ -90,13 +95,14 @@ namespace Whatsdown_Authentication_Service.Logic
             string userID = Guid.NewGuid().ToString();
             string ProfileID = Guid.NewGuid().ToString();
 
-            userProfile = new Profile(ProfileID, model.DisplayName, Variables.DefaultStatus, "", model.Gender, userID, null);
+            userProfile = new Profile(ProfileID, model.DisplayName, Variables.DefaultStatus,"", model.Gender, userID, null);
             user = new User(userID, model.Email, passwordHash, "Salt", userProfile);
             user.Profile.user = user;
 
 
             //Register new User
             repository.saveUser(user);
+            Console.WriteLine($"Created account for user: ", model.Email);
             logger.LogInformation($"Created account for user: ", model.Email);
         }
 

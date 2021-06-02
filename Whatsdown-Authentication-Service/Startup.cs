@@ -49,7 +49,8 @@ namespace Whatsdown_Authentication_Service
                     .SetIsOriginAllowed(x => true)
                     .AllowCredentials());
             });
-          
+            services.AddLogging();
+            services.AddSingleton<AuthV1Logic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

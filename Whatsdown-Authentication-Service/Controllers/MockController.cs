@@ -15,9 +15,9 @@ namespace Whatsdown_Authentication_Service.Controllers
     public class MockController : ControllerBase
     {
         MockLogic logic;
-        public MockController(AuthenticationContext auth, ILogger<MockLogic> logger)
+        public MockController(AuthenticationContext auth, ILogger<MockLogic> logger, ILoggerFactory loggerFactory)
         {
-            this.logic = new MockLogic(auth, logger);
+            this.logic = new MockLogic(auth, loggerFactory.CreateLogger<MockLogic>());
         }
 
         [HttpGet(), Route("{id}")]

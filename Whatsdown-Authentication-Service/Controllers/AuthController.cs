@@ -23,10 +23,10 @@ namespace Whatsdown_Authentication_Service.Controllers
         private readonly IConfiguration _configuration;
         private AuthV1Logic logic;
         private ILogger<AuthController> logger;
-        public AuthController(IConfiguration configuration, ILoggerFactory loggerFactory, ILogger<AuthController> logger, AuthenticationContext context)
+        public AuthController(IConfiguration configuration,  ILogger<AuthController> logger, AuthV1Logic logic)
         {
             this._configuration = configuration;
-            this.logic = new AuthV1Logic(context, loggerFactory.CreateLogger<AuthV1Logic>());
+            this.logic = logic;
             this.logger = logger;
         }
 
@@ -66,6 +66,7 @@ namespace Whatsdown_Authentication_Service.Controllers
         {
             IActionResult response = Unauthorized();
             logger.LogDebug("Calling the authenticate method.");
+            Console.WriteLine($"Calling the authenticate method.");
             try
             {
                 return Ok(new { token = logic.Authenticate(model) });
