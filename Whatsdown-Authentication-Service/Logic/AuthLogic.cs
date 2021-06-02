@@ -75,6 +75,7 @@ namespace Whatsdown_Authentication_Service.Logic
         public Profile GetUserProfile(string id)
         {
             Profile profile = authenticationRepository.GetProfileByUserId(id);
+           if (profile != null)
             profile.user = null;
             return profile;
         }

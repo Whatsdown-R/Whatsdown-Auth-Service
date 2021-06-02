@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Whatsdown_Authentication_Service.Controllers
     public class MockController : ControllerBase
     {
         MockLogic logic;
-        public MockController(AuthenticationContext auth)
+        public MockController(AuthenticationContext auth, MockLogic logic, ILogger<MockLogic> logger)
         {
-            this.logic = new MockLogic(auth);
+            this.logic = new MockLogic(auth, logger);
         }
 
         [HttpGet(), Route("{id}")]
