@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Whatsdown_Authentication_Service.Data;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Whatsdown_Authentication_Service.Logic;
 
 namespace Whatsdown_Authentication_Service
 {
@@ -52,13 +53,14 @@ namespace Whatsdown_Authentication_Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+           
             app.UseHttpsRedirection();
 
             app.UseRouting();

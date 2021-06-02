@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Whatsdown_Authentication_Service.Data;
 using Whatsdown_Authentication_Service.Exceptions;
 using Whatsdown_Authentication_Service.Logic;
 using Whatsdown_Authentication_Service.Models;
@@ -22,10 +23,10 @@ namespace Whatsdown_Authentication_Service.Controllers
         private readonly IConfiguration _configuration;
         private AuthV1Logic logic;
         private ILogger<AuthController> logger;
-        public AuthController(IConfiguration configuration, AuthV1Logic logic, ILogger<AuthController> logger)
+        public AuthController(IConfiguration configuration, ILoggerFactory loggerFactory, ILogger<AuthController> logger, AuthenticationContext context)
         {
             this._configuration = configuration;
-            this.logic = logic;
+            this.logic = new AuthV1Logic(context, loggerFactory.CreateLogger<AuthV1Logic>());
             this.logger = logger;
         }
 

@@ -14,11 +14,13 @@ namespace Whatsdown_Authentication_Service.Logic
     {
         AuthenticationRepository repository;
         private readonly ILogger logger;
-        public AuthV1Logic(AuthenticationContext context, ILogger<AuthV1Logic> logger)
+        public AuthV1Logic(AuthenticationContext context, ILogger<AuthV1Logic> _logger)
         {
             this.repository = new AuthenticationRepository(context);
-            this.logger = logger;
+            this.logger = _logger;
         }
+
+       
 
         private bool DoesUserWithEmailAlreadyExist(string email)
         {
