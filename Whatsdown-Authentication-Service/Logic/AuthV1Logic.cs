@@ -40,8 +40,7 @@ namespace Whatsdown_Authentication_Service.Logic
                 var account = repository.GetUserByEmail(model.email);
                 logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
 
-                Console.WriteLine($"Attempting to authenticate user with email: {1}", model.email);
-                Console.WriteLine(account.ToString());
+                Console.WriteLine($"Attempting to authenticate user with email: {model.email}", model.email);
                 // check account found and verify password
                 Console.WriteLine("Attemtping to use Bcrypt");
                 bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash);
