@@ -21,7 +21,7 @@ namespace Whatsdown_Authentication_Service.Controllers
     {
         private readonly IConfiguration _configuration;
         private AuthV1Logic logic;
-        private ILogger logger;
+        private ILogger<AuthController> logger;
         public AuthController(IConfiguration configuration, AuthV1Logic logic, ILogger<AuthController> logger)
         {
             this._configuration = configuration;

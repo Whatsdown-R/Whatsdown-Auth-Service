@@ -13,7 +13,7 @@ namespace Whatsdown_Authentication_Service.Logic
     public class AuthV1Logic
     {
         AuthenticationRepository repository;
-        private readonly ILogger<AuthV1Logic> logger;
+        private readonly ILogger logger;
         public AuthV1Logic(AuthenticationContext context, ILogger<AuthV1Logic> logger)
         {
             this.repository = new AuthenticationRepository(context);
