@@ -39,7 +39,7 @@ namespace Whatsdown_Authentication_Service.Logic
             logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
 
             Console.WriteLine($"Attempting to authenticate user with email: {1}", model.email);
-            Console.WriteLine(account);
+            Console.WriteLine(account.ToString());
             // check account found and verify password
             if (account == null || !BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash))
             {
@@ -50,8 +50,15 @@ namespace Whatsdown_Authentication_Service.Logic
             }
             else
             {
-                // authentication successful
-                return repository.GetProfileByUserId(account.UserID);
+                Console.WriteLine("Getting Profile using userID");
+                try
+                {
+                    return repository.GetProfileByUserId(account.UserID);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                return null;
             }
         }
 
