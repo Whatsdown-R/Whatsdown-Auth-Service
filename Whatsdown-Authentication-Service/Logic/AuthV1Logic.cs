@@ -42,13 +42,19 @@ namespace Whatsdown_Authentication_Service.Logic
 
                 Console.WriteLine($"Attempting to authenticate user with email: {model.email}", model.email);
                 // check account found and verify password
-                Console.WriteLine("Attemtping to use Bcrypt");
-                bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash);
-                Console.WriteLine("Bcrypt has been used");
-                Console.WriteLine("Result : " + test);
-                if (account == null)
+             
+               
+                if (account == null )
                 {
                     // authentication failed
+                    logger.LogWarning($"authentication failed with with email: {1}", model.email);
+                    Console.WriteLine($"authentication failed with with email: {1}", model.email);
+                    throw new ArgumentException("The email or password is incorrect.");
+                }
+               
+                bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordSalt);
+                if (!test)
+                {
                     logger.LogWarning($"authentication failed with with email: {1}", model.email);
                     Console.WriteLine($"authentication failed with with email: {1}", model.email);
                     throw new ArgumentException("The email or password is incorrect.");
@@ -69,8 +75,9 @@ namespace Whatsdown_Authentication_Service.Logic
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw new Exception("Something went wrong");
             }
-            return null;
+           
          
         }
 
@@ -110,7 +117,9 @@ namespace Whatsdown_Authentication_Service.Logic
 
 
             //Hash the password 
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            
+            string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password, passwordSalt);
             logger.LogInformation($"Hashing password of user: {1}", model.Email);
             // Save user
 
@@ -118,7 +127,7 @@ namespace Whatsdown_Authentication_Service.Logic
             string ProfileID = Guid.NewGuid().ToString();
 
             userProfile = new Profile(ProfileID, model.DisplayName, Variables.DefaultStatus,"", model.Gender, userID, null);
-            user = new User(userID, model.Email, passwordHash, "Salt", userProfile);
+            user = new User(userID, model.Email, passwordHash, passwordSalt, userProfile);
             user.Profile.user = user;
 
 
