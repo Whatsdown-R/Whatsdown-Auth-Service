@@ -29,8 +29,8 @@ namespace Whatsdown_Authentication_Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var env = Configuration.GetValue<string>("Environment");
-            var connectionString = env.ToLower() == "development" ? Configuration.GetConnectionString("Local") : Configuration.GetConnectionString("Production");
+          
+            var connectionString = Configuration.GetConnectionString("AuthServiceDB");
 
             services.AddDbContext<AuthenticationContext>(options =>
 

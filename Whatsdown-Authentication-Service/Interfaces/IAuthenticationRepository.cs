@@ -13,6 +13,6 @@ namespace Whatsdown_Authentication_Service
 
         public User GetUserByEmail(string Email);
         public List<Profile> GetProfiles(List<String> ids);
-        public List<Profile> GetProfiles(List<String> ids);
+
     }
 }
