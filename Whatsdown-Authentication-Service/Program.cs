@@ -14,13 +14,30 @@ namespace Whatsdown_Authentication_Service
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+
+		public static IHostBuilder CreateHostBuilder(string[] args) =>
+			Host.CreateDefaultBuilder(args)
+			.ConfigureAppConfiguration((hostingContext, config) =>
+			{
+				var env = hostingContext.HostingEnvironment;
+				Console.WriteLine($"the environment is now: {env.EnvironmentName}");
+
+				//TODO: hij pakt deze niet goed in kubernetes?
+				config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json",
+								optional: true, reloadOnChange: true);
+				
+			})
+			.ConfigureWebHostDefaults(webBuilder =>
+			{
+				webBuilder.UseStartup<Startup>();
+			}).ConfigureLogging(logging =>
+			{
+				logging.ClearProviders();
+				logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+			});
+	}
 }

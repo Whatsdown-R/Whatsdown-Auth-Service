@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Whatsdown_Authentication_Service.Exceptions;
 using Whatsdown_Authentication_Service.Logic;
+using Whatsdown_Authentication_Service.Models;
 using Whatsdown_Authentication_Service.View;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
@@ -58,7 +60,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("normal")]
         public IActionResult Authenticate(LoginView model)
         {
             IActionResult response = Unauthorized();
@@ -73,6 +75,29 @@ namespace Whatsdown_Authentication_Service.Controllers
             }
 
             return response;
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register(RegisterModel model)
+        {
+            IActionResult response = Unauthorized();
+            try
+            {
+                logic.Register(model);
+                response = Ok("Succesfully created account");
+            }
+            catch(ArgumentException ex)
+            {
+                response = BadRequest(ex.Message);
+            }catch(UserAlreadyExistException ex)
+            {
+                response = BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                response = Unauthorized(ex.Message);
+            }
+                return response;
         }
     }
 

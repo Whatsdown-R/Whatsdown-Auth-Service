@@ -12,7 +12,7 @@ namespace Whatsdown_Authentication_Service
         public void saveProfile(Profile User);
 
         public User GetUserByEmail(string Email);
-
+        public List<Profile> GetProfiles(List<String> ids);
         public List<Profile> GetProfiles(List<String> ids);
     }
 }
