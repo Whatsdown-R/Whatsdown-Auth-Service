@@ -33,33 +33,46 @@ namespace Whatsdown_Authentication_Service.Logic
 
         public Profile Authenticate(LoginView model)
         {
-            logger.LogDebug("Email: " + model.email);
-            Console.WriteLine("Email: " + model.email);
-            var account = repository.GetUserByEmail(model.email);
-            logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
+            try
+            {
+                logger.LogDebug("Email: " + model.email);
+                Console.WriteLine("Email: " + model.email);
+                var account = repository.GetUserByEmail(model.email);
+                logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
 
-            Console.WriteLine($"Attempting to authenticate user with email: {1}", model.email);
-            Console.WriteLine(account.ToString());
-            // check account found and verify password
-            if (account == null || !BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash))
-            {
-                // authentication failed
-                logger.LogWarning($"authentication failed with with email: {1}", model.email);
-                Console.WriteLine($"authentication failed with with email: {1}", model.email);
-                throw new ArgumentException("The email or password is incorrect.");
-            }
-            else
-            {
-                Console.WriteLine("Getting Profile using userID");
-                try
+                Console.WriteLine($"Attempting to authenticate user with email: {1}", model.email);
+                Console.WriteLine(account.ToString());
+                // check account found and verify password
+                Console.WriteLine("Attemtping to use Bcrypt");
+                bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordHash);
+                Console.WriteLine("Bcrypt has been used");
+                Console.WriteLine("Result : " + test);
+                if (account == null)
                 {
-                    return repository.GetProfileByUserId(account.UserID);
-                }catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
+                    // authentication failed
+                    logger.LogWarning($"authentication failed with with email: {1}", model.email);
+                    Console.WriteLine($"authentication failed with with email: {1}", model.email);
+                    throw new ArgumentException("The email or password is incorrect.");
                 }
-                return null;
+                else
+                {
+                    Console.WriteLine("Getting Profile using userID");
+                    try
+                    {
+                        return repository.GetProfileByUserId(account.UserID);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    return null;
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
+            return null;
+         
         }
 
         private void CheckPassword(string password)
