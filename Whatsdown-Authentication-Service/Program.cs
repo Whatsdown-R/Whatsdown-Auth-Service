@@ -29,15 +29,11 @@ namespace Whatsdown_Authentication_Service
 				config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
 				.AddJsonFile($"appsettings.{env.EnvironmentName}.json",
 								optional: true, reloadOnChange: true);
-				
+
 			})
 			.ConfigureWebHostDefaults(webBuilder =>
 			{
 				webBuilder.UseStartup<Startup>();
-			}).ConfigureLogging(logging =>
-			{
-				logging.ClearProviders();
-				logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 			});
 	}
 }
