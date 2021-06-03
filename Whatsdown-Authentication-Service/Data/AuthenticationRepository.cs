@@ -6,7 +6,7 @@ using Whatsdown_Authentication_Service.Models;
 
 namespace Whatsdown_Authentication_Service.Data
 {
-    public class AuthenticationRepository : IAuthenticationRepository
+    public class AuthenticationRepository  
     {
 
         AuthenticationContext authenticationContext; 
@@ -22,25 +22,7 @@ namespace Whatsdown_Authentication_Service.Data
             return authenticationContext.Users.FirstOrDefault<User>(x => x.Email == Email);
         }
 
-        public Profile GetProfileByUserId(string Id)
-        {
-            return authenticationContext.Profiles.SingleOrDefault<Profile>(p => p.UserID == Id);
-        }
-
-        public Profile GetProfileByProfileId(string ProfileID)
-        {
-            return authenticationContext.Profiles.SingleOrDefault<Profile>(p => p.profileId == ProfileID );
-        }
-        public List<Profile> GetProfiles(List<string> ids)
-        {
-            return this.authenticationContext.Profiles.Where(profile => ids.Contains(profile.UserID)).ToList();
-        }
-
-        public void saveProfile(Profile userProfile)
-        {
-            authenticationContext.Profiles.Add(userProfile);
-            authenticationContext.SaveChanges();
-        }
+ 
 
 
 

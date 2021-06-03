@@ -15,10 +15,12 @@ namespace Whatsdown_Authentication_Service.Logic
     {
         AuthenticationRepository repository;
         private readonly ILogger logger;
+        private JWTLogic jwt;
         public AuthV1Logic(IServiceProvider factory , ILogger<AuthV1Logic> _logger)
         {
             this.repository = new AuthenticationRepository(factory.CreateScope().ServiceProvider.GetRequiredService<AuthenticationContext>());
             this.logger = _logger;
+            this.jwt = new JWTLogic();
         }
 
        
@@ -31,14 +33,14 @@ namespace Whatsdown_Authentication_Service.Logic
             return false;
         }
 
-        public Profile Authenticate(LoginView model)
+        public JWT Authenticate(LoginView model)
         {
             try
             {
                 logger.LogDebug("Email: " + model.email);
                 Console.WriteLine("Email: " + model.email);
                 var account = repository.GetUserByEmail(model.email);
-                logger.LogDebug($"Attempting to authenticate user with email: {1}", model.email);
+                logger.LogDebug($"Attempting to authenticate user with email: {model.email}");
 
                 Console.WriteLine($"Attempting to authenticate user with email: {model.email}", model.email);
                 // check account found and verify password
@@ -47,7 +49,7 @@ namespace Whatsdown_Authentication_Service.Logic
                 if (account == null )
                 {
                     // authentication failed
-                    logger.LogWarning($"authentication failed with with email: {1}", model.email);
+                    logger.LogWarning($"authentication failed with with email: {model.email}", model.email);
                     Console.WriteLine($"authentication failed with with email: {1}", model.email);
                     throw new ArgumentException("The email or password is incorrect.");
                 }
@@ -64,13 +66,18 @@ namespace Whatsdown_Authentication_Service.Logic
                     Console.WriteLine("Getting Profile using userID");
                     try
                     {
-                        return repository.GetProfileByUserId(account.UserID);
+                        
+
+                        string jwtToken = jwt.GenerateJwtToken(account.ProfileId, account.Role);
+
+                        return new JWT(account.ProfileId, account.Role,  jwtToken);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
+                        throw new Exception("Something went wrong");
                     }
-                    return null;
+                 
                 }
             }catch(Exception ex)
             {
@@ -91,10 +98,10 @@ namespace Whatsdown_Authentication_Service.Logic
         }
 
 
-        public void Register(RegisterModel model)
+        public string Register(RegisterView model)
         {
             User user = null;
-            Profile userProfile = null;
+
             if (model.DisplayName == null || model.Email == null || model.ConfirmPassword == null || model.Password == null || model.ConfirmPassword != model.Password)
             {
                 //Throw Exception
@@ -126,15 +133,16 @@ namespace Whatsdown_Authentication_Service.Logic
             string userID = Guid.NewGuid().ToString();
             string ProfileID = Guid.NewGuid().ToString();
 
-            userProfile = new Profile(ProfileID, model.DisplayName, Variables.DefaultStatus,"", model.Gender, userID, null);
-            user = new User(userID, model.Email, passwordHash, passwordSalt, userProfile);
-            user.Profile.user = user;
+         
+            user = new User(userID, model.Email, passwordHash, passwordSalt, ProfileID, "User");
+           
 
 
             //Register new User
             repository.saveUser(user);
             Console.WriteLine($"Created account for user: ", model.Email);
             logger.LogInformation($"Created account for user: ", model.Email);
+            return ProfileID;
         }
 
     

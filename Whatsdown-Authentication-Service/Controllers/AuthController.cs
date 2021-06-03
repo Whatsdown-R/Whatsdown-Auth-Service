@@ -30,7 +30,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             this.logger = logger;
         }
 
-           [HttpPost("google")]    
+        [HttpPost(), Route("google")]    
         public async Task<IActionResult> GoogleLogin(string idToken)
         {
             try
@@ -61,7 +61,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             }
         }
 
-        [HttpPost("normal")]
+        [HttpPost(), Route("normal")]
         public IActionResult Authenticate(LoginView model)
         {
             IActionResult response = Unauthorized();
@@ -69,24 +69,30 @@ namespace Whatsdown_Authentication_Service.Controllers
             Console.WriteLine($"Calling the authenticate method.");
             try
             {
-                return Ok(new { token = logic.Authenticate(model) });
+                return Ok(new { jwt = logic.Authenticate(model) });
             }
             catch (ArgumentException ex)
             {
-                Unauthorized(ex.Message);
+               return BadRequest(ex.Message);
+            }catch(Exception ex)
+            {
+                return Unauthorized(ex.Message);
             }
 
             return response;
         }
 
-        [HttpPost("register")]
-        public IActionResult Register(RegisterModel model)
+
+       
+
+        [HttpPost(), Route("register")]
+        public IActionResult Register([FromBody]RegisterView model)
         {
-            IActionResult response = Unauthorized();
+            IActionResult response;
             try
             {
-                logic.Register(model);
-                response = Ok("Succesfully created account");
+                string profileId = logic.Register(model);
+                response = Ok(new { response = profileId });
             }
             catch(ArgumentException ex)
             {

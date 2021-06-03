@@ -9,5 +9,15 @@ namespace Whatsdown_Authentication_Service.View
     {
         public string email { get; set; }
         public string password { get; set; }
+
+        public LoginView()
+        {
+        }
+
+        public LoginView(string email, string password)
+        {
+            this.email = email;
+            this.password = password;
+        }
     }
 }

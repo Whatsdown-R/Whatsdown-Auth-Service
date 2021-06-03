@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Whatsdown_Authentication_Service.Data;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Whatsdown_Authentication_Service.Logic;
+using Microsoft.OpenApi.Models;
 
 namespace Whatsdown_Authentication_Service
 {
@@ -50,6 +51,10 @@ namespace Whatsdown_Authentication_Service
                     .AllowCredentials());
             });
             services.AddLogging();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
+            });
             services.AddSingleton<AuthV1Logic>();
         }
 
@@ -60,6 +65,8 @@ namespace Whatsdown_Authentication_Service
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PostService v1"));
             }
            
             app.UseHttpsRedirection();

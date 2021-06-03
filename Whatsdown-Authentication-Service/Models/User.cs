@@ -14,22 +14,23 @@ namespace Whatsdown_Authentication_Service.Models
 
         public string Email { get;  set; }
 
+        public string Role { get; set; }
 
         public string PasswordSalt { get;  set; }
 
         public string PasswordHash { get;  set; }
 
-        public Profile Profile { get;  set; }
-
+        public string ProfileId { get; set; }
         public User() { }
 
-        public User(string userID, string email, string passwordSalt, string passwordHash, Profile profile)
+        public User(string userID, string email, string passwordSalt, string passwordHash, string profile, string role)
         {
             UserID = userID;
             Email = email;
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
-            Profile = profile;
+            ProfileId = profile;
+            Role = role;
         }
     }
 }
