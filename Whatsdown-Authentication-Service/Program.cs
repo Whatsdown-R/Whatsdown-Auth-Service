@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace Whatsdown_Authentication_Service
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+			var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+			CreateHostBuilder(args).Build().Run();
             
         }
 
@@ -30,16 +32,22 @@ namespace Whatsdown_Authentication_Service
 				.AddJsonFile($"appsettings.{env.EnvironmentName}.json",
 								optional: true, reloadOnChange: true);
 
-			}).ConfigureLogging((context , logging) =>
-			{
-				logging.ClearProviders();
-				logging.AddConfiguration(context.Configuration.GetSection("Logging"));
-				logging.AddDebug();
-
 			})
 			.ConfigureWebHostDefaults(webBuilder =>
 			{
 				webBuilder.UseStartup<Startup>();
-			});
+			}).ConfigureLogging(logging =>  
+
+	  {
+			// clear default logging providers
+			logging.ClearProviders();
+
+			// add built-in providers manually, as needed 
+			logging.AddConsole();
+			logging.AddDebug();
+			logging.AddEventLog();
+			logging.AddEventSourceLogger();
+		
+		});//;
 	}
 }

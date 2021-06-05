@@ -32,11 +32,10 @@ namespace Whatsdown_Authentication_Service
         public void ConfigureServices(IServiceCollection services)
         {
           
-            var connectionString = Configuration.GetConnectionString("AuthServiceDB");
+       
 
             services.AddDbContext<AuthenticationContext>(options =>
-
-                 options.UseMySql(connectionString));
+                 options.UseMySql(Configuration.GetConnectionString("AuthServiceDB")));
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -56,12 +55,15 @@ namespace Whatsdown_Authentication_Service
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
             });
             services.AddSingleton<AuthV1Logic>();
+
+         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            
+       
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

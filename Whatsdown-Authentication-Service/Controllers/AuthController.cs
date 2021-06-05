@@ -22,12 +22,15 @@ namespace Whatsdown_Authentication_Service.Controllers
     {
         private readonly IConfiguration _configuration;
         private AuthV1Logic logic;
-        private ILogger<AuthController> logger;
+        private readonly ILogger logger;
+        private readonly ILogger testLogger;
         public AuthController(IConfiguration configuration,  ILogger<AuthController> logger, AuthV1Logic logic)
         {
             this._configuration = configuration;
             this.logic = logic;
             this.logger = logger;
+            testLogger = ApplicationLogging.CreateLogger<AuthController>();
+            testLogger.LogDebug("AUTH!!!!!!");
         }
 
         [HttpPost(), Route("google")]    
@@ -65,8 +68,7 @@ namespace Whatsdown_Authentication_Service.Controllers
         public IActionResult Authenticate(LoginView model)
         {
             IActionResult response = Unauthorized();
-            logger.LogDebug("Calling the authenticate method.");
-            Console.WriteLine($"Calling the authenticate method.");
+   
             try
             {
                 return Ok(new { jwt = logic.Authenticate(model) });
@@ -79,7 +81,7 @@ namespace Whatsdown_Authentication_Service.Controllers
                 return Unauthorized(ex.Message);
             }
 
-            return response;
+       
         }
 
 
@@ -91,6 +93,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             IActionResult response;
             try
             {
+                logger.LogDebug("Calling register method");
                 string profileId = logic.Register(model);
                 response = Ok(new { response = profileId });
             }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +10,12 @@ namespace Whatsdown_Authentication_Service.Data
 {
     public class AuthenticationRepository  
     {
-
+        private readonly ILogger _logger;
         AuthenticationContext authenticationContext; 
 
         public AuthenticationRepository(AuthenticationContext auth)
         {
-
+        
             this.authenticationContext = auth;
         }
 
@@ -28,8 +30,10 @@ namespace Whatsdown_Authentication_Service.Data
 
         public void saveUser(User user)
         {
-            authenticationContext.Users.Add(user);
-            authenticationContext.SaveChanges();
+                authenticationContext.Users.Add(user);
+                authenticationContext.SaveChanges();
+
+  
         }
         public void saveUsers(List<User> users)
         {
