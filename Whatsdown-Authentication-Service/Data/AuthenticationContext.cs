@@ -14,7 +14,7 @@ namespace Whatsdown_Authentication_Service.Data
         public AuthenticationContext(DbContextOptions<AuthenticationContext> options) : base(options)
         {
             if(!Database.IsInMemory())
-                Database.EnsureCreated();
+                Database.Migrate();
         
         }
 

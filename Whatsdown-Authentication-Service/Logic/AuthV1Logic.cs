@@ -152,7 +152,7 @@ namespace Whatsdown_Authentication_Service.Logic
             }
          
             Console.WriteLine($"Created account for user: ", model.Email);
-            _logger.LogInformation($"Created account for user: ", model.Email);
+            _logger.LogDebug($"Created account for user: ", model.Email);
             return ProfileID;
         }
 

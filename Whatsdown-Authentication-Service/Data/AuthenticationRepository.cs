@@ -21,7 +21,7 @@ namespace Whatsdown_Authentication_Service.Data
 
         public User GetUserByEmail(string Email)
         {
-            return authenticationContext.Users.FirstOrDefault<User>(x => x.Email == Email);
+            return authenticationContext.UserInfo.FirstOrDefault<User>(x => x.Email == Email);
         }
 
  
@@ -30,14 +30,14 @@ namespace Whatsdown_Authentication_Service.Data
 
         public void saveUser(User user)
         {
-                authenticationContext.Users.Add(user);
+                authenticationContext.UserInfo.Add(user);
                 authenticationContext.SaveChanges();
 
   
         }
         public void saveUsers(List<User> users)
         {
-            authenticationContext.Users.AddRange(users);
+            authenticationContext.UserInfo.AddRange(users);
             authenticationContext.SaveChanges();
         }
 
