@@ -9,7 +9,7 @@ namespace Whatsdown_Authentication_Service.Data
 {
     public class AuthenticationContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> UserInfo { get; set; }
        
         public AuthenticationContext(DbContextOptions<AuthenticationContext> options) : base(options)
         {
