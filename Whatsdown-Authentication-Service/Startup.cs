@@ -55,8 +55,15 @@ namespace Whatsdown_Authentication_Service
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
             });
             services.AddSingleton<AuthV1Logic>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod().AllowAnyOrigin());
 
-         
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +81,7 @@ namespace Whatsdown_Authentication_Service
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
