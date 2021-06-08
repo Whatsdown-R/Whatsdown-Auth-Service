@@ -59,7 +59,7 @@ namespace Whatsdown_Authentication_Service
             {
                 options.AddPolicy("CorsPolicy", builder => builder
                     .AllowAnyHeader()
-                    .AllowAnyMethod().AllowAnyOrigin());
+                    .AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains().AllowAnyOrigin());
 
             });
 
@@ -77,11 +77,12 @@ namespace Whatsdown_Authentication_Service
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PostService v1"));
             }
-           
+
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("CorsPolicy");
+           
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>

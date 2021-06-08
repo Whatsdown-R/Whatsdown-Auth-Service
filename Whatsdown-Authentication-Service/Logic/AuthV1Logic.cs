@@ -39,58 +39,52 @@ namespace Whatsdown_Authentication_Service.Logic
 
         public JWT Authenticate(LoginView model)
         {
-            try
+
+            _logger.LogDebug("Email: " + model.email);
+            Console.WriteLine("Email: " + model.email);
+            var account = repository.GetUserByEmail(model.email);
+            _logger.LogDebug($"Attempting to authenticate user with email: {model.email}");
+
+            Console.WriteLine($"Attempting to authenticate user with email: {model.email}", model.email);
+            // check account found and verify password
+
+
+            if (account == null)
             {
-                _logger.LogDebug("Email: " + model.email);
-                Console.WriteLine("Email: " + model.email);
-                var account = repository.GetUserByEmail(model.email);
-                _logger.LogDebug($"Attempting to authenticate user with email: {model.email}");
-
-                Console.WriteLine($"Attempting to authenticate user with email: {model.email}", model.email);
-                // check account found and verify password
-             
-               
-                if (account == null )
-                {
-                    // authentication failed
-                    _logger.LogWarning($"authentication failed with with email: {model.email}", model.email);
-                    Console.WriteLine($"authentication failed with with email: {1}", model.email);
-                    throw new ArgumentException("The email or password is incorrect.");
-                }
-               
-                bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordSalt);
-                if (!test)
-                {
-                    _logger.LogWarning($"authentication failed with with email: {1}", model.email);
-                    Console.WriteLine($"authentication failed with with email: {1}", model.email);
-                    throw new ArgumentException("The email or password is incorrect.");
-                }
-                else
-                {
-                    Console.WriteLine("Getting Profile using userID");
-                    try
-                    {
-                        
-
-                        string jwtToken = jwt.GenerateJwtToken(account.ProfileId, account.Role);
-
-                        return new JWT(account.ProfileId, account.Role,  jwtToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        throw new Exception("Something went wrong");
-                    }
-                 
-                }
-            }catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception("Something went wrong");
+                // authentication failed
+                _logger.LogWarning($"authentication failed with with email: {model.email}", model.email);
+                Console.WriteLine($"authentication failed with with email: {1}", model.email);
+                throw new ArgumentException("The email or password is incorrect.");
             }
-           
+
+            bool test = BCrypt.Net.BCrypt.Verify(model.password, account.PasswordSalt);
+            if (!test)
+            {
+                _logger.LogWarning($"authentication failed with with email: {1}", model.email);
+                Console.WriteLine($"authentication failed with with email: {1}", model.email);
+                throw new ArgumentException("The email or password is incorrect.");
+            }
+            else
+            {
+                Console.WriteLine("Getting Profile using userID");
+                try
+                {
+
+
+                    string jwtToken = jwt.GenerateJwtToken(account.ProfileId, account.Role);
+
+                    return new JWT(account.ProfileId, account.Role, jwtToken);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw new Exception("Something went wrong");
+                }
+
+            }
+        }          
          
-        }
+    
 
         private void CheckPassword(string password)
         {
