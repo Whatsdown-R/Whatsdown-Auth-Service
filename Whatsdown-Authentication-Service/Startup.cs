@@ -16,6 +16,11 @@ using Whatsdown_Authentication_Service.Data;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Whatsdown_Authentication_Service.Logic;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Whatsdown_Authentication_Service
 {
@@ -63,6 +68,7 @@ namespace Whatsdown_Authentication_Service
 
             });
 
+ 
 
         }
 

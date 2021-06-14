@@ -14,7 +14,7 @@ namespace Whatsdown_Authentication_Service.Logic
         public string GenerateJwtToken(string profileId, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("[" + Variables.JWTSercret + "]");
+            var key = Encoding.ASCII.GetBytes(Variables.JWTSercret );
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", profileId.ToString()), new Claim("role", role)}),
@@ -28,7 +28,7 @@ namespace Whatsdown_Authentication_Service.Logic
         public int? ValidateJwtToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("[" + Variables.JWTSercret + "]");
+            var key = Encoding.ASCII.GetBytes(Variables.JWTSercret);
             try
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters

@@ -96,7 +96,7 @@ namespace Whatsdown_Authentication_Service.Logic
         }
 
 
-        public string Register(RegisterView model)
+        public async Task<string> RegisterAsync(RegisterView model)
         {
            
             User user = null;
@@ -139,7 +139,7 @@ namespace Whatsdown_Authentication_Service.Logic
             //Register new User
             try
             {
-                repository.saveUser(user);
+                await repository.saveUser(user);
             }catch(Exception ex)
             {
                 _logger.LogDebug(ex.Message);

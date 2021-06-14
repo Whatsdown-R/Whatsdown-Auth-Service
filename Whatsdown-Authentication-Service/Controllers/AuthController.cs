@@ -94,7 +94,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             try
             {
                 logger.LogDebug("The register method has been called");
-                string profileId = logic.Register(model);
+                string profileId = logic.RegisterAsync(model).Result;
 
                 response = Ok(new { response = profileId });
             }
