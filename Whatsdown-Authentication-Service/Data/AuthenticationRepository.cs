@@ -24,17 +24,7 @@ namespace Whatsdown_Authentication_Service.Data
             return authenticationContext.UserInfo.FirstOrDefault<User>(x => x.Email == Email);
         }
 
- 
-
-
-
-        public async 
- 
-
-
-
-        Task
-saveUser(User user)
+        public async Task saveUser(User user)
         {
                 authenticationContext.UserInfo.Add(user);
                 authenticationContext.SaveChanges();

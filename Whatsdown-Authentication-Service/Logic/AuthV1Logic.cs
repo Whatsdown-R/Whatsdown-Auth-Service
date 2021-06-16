@@ -29,7 +29,7 @@ namespace Whatsdown_Authentication_Service.Logic
 
        
 
-        private bool DoesUserWithEmailAlreadyExist(string email)
+        public bool DoesUserWithEmailAlreadyExist(string email)
         {
             User user = repository.GetUserByEmail(email);
             if (user != null)
@@ -95,6 +95,7 @@ namespace Whatsdown_Authentication_Service.Logic
                 throw new InsufficientPasswordException("Password too long. Maximum characters allowed is " + Variables.DefaultMaximumPasswordLength);
         }
 
+   
 
         public async Task<string> RegisterAsync(RegisterView model)
         {

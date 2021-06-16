@@ -47,9 +47,13 @@ namespace Whatsdown_Authentication_Service.Controllers
                 if (payload.EmailVerified)
                 {
                     
-                    var user = new { name = "Test", lastname = "Tester" };
+                    if (!logic.DoesUserWithEmailAlreadyExist(payload.Email))
+                    {
+                        await logic.RegisterAsync(new RegisterView(payload.Email, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", payload.Name + " " + payload.FamilyName, "Male");
+                    }
+                    JWT jwt = logic.GoogleAuthenticate(payload.Email);
 
-                    return Ok(user);
+                    return Ok(jwt);
                 }
                 logger.LogInformation($"Google email was not verified, {1}", payload.Email);
                 //store user
@@ -57,9 +61,9 @@ namespace Whatsdown_Authentication_Service.Controllers
                 return Unauthorized("Please verify google account first.");
                 
             }
-            catch
+            catch (Exception ex)
             {
-                // Invalid token
+                logger.LogWarning(ex.Message);
                 return Unauthorized();
             }
         }
