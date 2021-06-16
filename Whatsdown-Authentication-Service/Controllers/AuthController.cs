@@ -42,7 +42,7 @@ namespace Whatsdown_Authentication_Service.Controllers
                 logger.LogInformation(_configuration.GetSection("Authentication").Value);
                 Payload payload = await ValidateAsync(idToken, new ValidationSettings
                 {
-                    Audience = new[] { _configuration.GetSection("Authentication:Google:ClientId").Value }
+                    Audience = new[] { _configuration.GetSection("Authentication").Value }
                 });
                 logger.LogInformation("Hosted Domain: " + payload.HostedDomain);
                 if (payload.EmailVerified)
