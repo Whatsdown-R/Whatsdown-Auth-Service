@@ -39,7 +39,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             {
                
                 logger.LogDebug("Attempting to login with google account");
-                logger.LogInformation(_configuration.GetSection("Authentication:Google:ClientId").Value);
+                logger.LogInformation(_configuration.GetSection("Authentication").Value);
                 Payload payload = await ValidateAsync(idToken, new ValidationSettings
                 {
                     Audience = new[] { _configuration.GetSection("Authentication:Google:ClientId").Value }
