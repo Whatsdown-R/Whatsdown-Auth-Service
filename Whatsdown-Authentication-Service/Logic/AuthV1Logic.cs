@@ -84,7 +84,25 @@ namespace Whatsdown_Authentication_Service.Logic
             }
         }          
          
-    
+        
+        public JWT GoogleAuthenticate(string email)
+        {
+            var account = repository.GetUserByEmail(email);
+            Console.WriteLine("Getting Profile using userID");
+            try
+            {
+
+
+                string jwtToken = jwt.GenerateJwtToken(account.ProfileId, account.Role);
+
+                return new JWT(account.ProfileId, account.Role, jwtToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception("Something went wrong");
+            }
+        }
 
         private void CheckPassword(string password)
         {
@@ -95,7 +113,57 @@ namespace Whatsdown_Authentication_Service.Logic
                 throw new InsufficientPasswordException("Password too long. Maximum characters allowed is " + Variables.DefaultMaximumPasswordLength);
         }
 
-   
+        public async Task<string> RegisterGoogleAccountAsync(RegisterView model)
+        {
+
+            User user = null;
+            _logger.LogDebug($"Registering Googleaccount for user {model.Email}: ", model.Email);
+
+            if (model.DisplayName == null || model.Email == null)
+            {
+                //Throw Exception
+                _logger.LogWarning($"attempted to create account null values.");
+                Console.WriteLine($"attempted to create account null values.");
+                throw new ArgumentException("Please fill in all the fields");
+            }
+
+            //Check if password is long enough and if not throw exceptions
+  
+            //Check if email already exists and then throw exception
+            if (DoesUserWithEmailAlreadyExist(model.Email))
+            {
+                _logger.LogError($"attempted to create account with already existing email : {model.Email}");
+                Console.WriteLine();
+                throw new UserAlreadyExistException("This email has already been used");
+            }
+
+
+
+
+            //Hash the password 
+
+          
+            // Save user
+
+            string userID = Guid.NewGuid().ToString();
+            string ProfileID = Guid.NewGuid().ToString();
+
+
+            user = new User(userID, model.Email, "", "", ProfileID, "User");
+            //Register new User
+            try
+            {
+                await repository.saveUser(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex.Message);
+            }
+
+            Console.WriteLine($"Created account for user: ", model.Email);
+            _logger.LogDebug($"Created account for user: ", model.Email);
+            return ProfileID;
+        }
 
         public async Task<string> RegisterAsync(RegisterView model)
         {
