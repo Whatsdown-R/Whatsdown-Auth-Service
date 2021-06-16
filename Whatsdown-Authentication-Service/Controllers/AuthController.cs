@@ -38,18 +38,19 @@ namespace Whatsdown_Authentication_Service.Controllers
         {
             try
             {
+               
                 logger.LogDebug("Attempting to login with google account");
                 Payload payload = await ValidateAsync(idToken, new ValidationSettings
                 {
                     Audience = new[] { _configuration.GetSection("Authentication:Google")["ClientId"] }
                 });
-
+                logger.LogInformation("Hosted Domain: " + payload.HostedDomain);
                 if (payload.EmailVerified)
                 {
                     
                     if (!logic.DoesUserWithEmailAlreadyExist(payload.Email))
                     {
-                        await logic.RegisterAsync(new RegisterView(payload.Email, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", payload.Name + " " + payload.FamilyName, "Male");
+                        await logic.RegisterAsync(new RegisterView(payload.Email, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", payload.Name + " " + payload.FamilyName, "Unknown"));
                     }
                     JWT jwt = logic.GoogleAuthenticate(payload.Email);
 
