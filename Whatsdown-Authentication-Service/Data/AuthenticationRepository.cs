@@ -26,15 +26,15 @@ namespace Whatsdown_Authentication_Service.Data
 
         public async Task saveUser(User user)
         {
-                authenticationContext.UserInfo.Add(user);
-                authenticationContext.SaveChanges();
+         authenticationContext.UserInfo.Add(user);
+         await authenticationContext.SaveChangesAsync();
 
-  
+
         }
         public  async void saveUsers(List<User> users)
         {
             authenticationContext.UserInfo.AddRange(users);
-            authenticationContext.SaveChanges();
+            await authenticationContext.SaveChangesAsync();
         }
 
 
