@@ -41,7 +41,7 @@ namespace Whatsdown_Authentication_Service
 	  {
 			// clear default logging providers
 			logging.ClearProviders();
-
+			
 			// add built-in providers manually, as needed 
 			logging.AddConsole();
 			logging.AddDebug();

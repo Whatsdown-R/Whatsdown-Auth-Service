@@ -23,13 +23,14 @@ namespace Whatsdown_Authentication_Service.Controllers
         private readonly IConfiguration _configuration;
         private AuthV1Logic logic;
         private readonly ILogger logger;
-        private readonly ILogger testLogger;
-        public AuthController(IConfiguration configuration,  ILogger<AuthController> logger, AuthV1Logic logic)
+
+        private MQConnector MQConnector;
+        public AuthController(IConfiguration configuration,  ILogger<AuthController> logger, AuthV1Logic logic) // Voeg MQConnecter toe
         {
             this._configuration = configuration;
             this.logic = logic;
             this.logger = logger;
-            testLogger = ApplicationLogging.CreateLogger<AuthController>();
+            this.MQConnector = null;
         }
 
         [HttpPost(), Route("google")]    
@@ -100,7 +101,7 @@ namespace Whatsdown_Authentication_Service.Controllers
             {
                 logger.LogDebug("The register method has been called");
                 string profileId = logic.RegisterAsync(model).Result;
-
+                //MQConnector.PublishProfile(new CreateProfile(profileId, model.DisplayName, model.Gender));
                 response = Ok(new { response = profileId });
             }
             catch(ArgumentException ex)

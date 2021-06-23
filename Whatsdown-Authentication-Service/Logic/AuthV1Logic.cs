@@ -123,7 +123,6 @@ namespace Whatsdown_Authentication_Service.Logic
             {
                 //Throw Exception
                 _logger.LogWarning($"attempted to create account null values.");
-                Console.WriteLine($"attempted to create account null values.");
                 throw new ArgumentException("Please fill in all the fields");
             }
 

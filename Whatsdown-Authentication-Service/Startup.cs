@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Whatsdown_Authentication_Service.Models;
 
 namespace Whatsdown_Authentication_Service
 {
@@ -68,7 +69,9 @@ namespace Whatsdown_Authentication_Service
 
             });
 
- 
+            services.Configure<Credentials>(Configuration.GetSection("MQCredentials"));
+            services.Configure<ConnectionStrings>(Configuration.GetSection("MQstring"));
+     /*       services.AddSingleton<MQConnector>();*/
 
         }
 
